@@ -7,7 +7,7 @@
 
 struct Node{
     int key;
-    char input[100];
+    char input[10000];
     Node *next;
 };
 
@@ -54,16 +54,16 @@ void insertData(char *input){
 
 void printData(){
     for(int i = 0; i < MAX; i++){
+        printf("Key: %d, Data: ", i);
         if(HashTable[i].dataCount > 0){
             Node *temp = HashTable[i].HEAD;
-            printf("Key: %d, Data: ", i);
             while(temp != NULL){
                 printf("%s ", temp->input);
                 temp = temp->next;
             }
-            printf("--> NULL");
-            printf("\n");
         }
+        printf("--> NULL");
+        printf("\n");
     }
 }
 
@@ -104,10 +104,11 @@ void findData(char *input){
 }
 int main(){
     FILE *fp = fopen("CaseShift2.csv", "r");
-    char input[100];
-    while(fscanf(fp, "%s", input) != EOF){
-        if (input[0] == '\n' || input[0] == ' ')continue;
+    char input[10000];
+    while(fscanf(fp, "%[^\n]\n", input) != EOF){
+        // if (input[0] == '\n' || input[0] == ' ')continue;
         // printf("%d ", hashFunction(input));
+        // fgetc(fp);
         insertData(input);
     }
 
