@@ -51,42 +51,100 @@ Node* getPredecessor(Node *curr){
 
 Node* delete_node(Node *curr, int value){
     if (!curr){
-        printf("Data not found");
-    }else if(curr->value > value){
+        printf("Data not found\n");
+        return NULL;
+    }
+    else if(curr->value > value){
         curr->left = delete_node(curr->left, value);
-    } else if(curr->value < value){
-        
-    }else if(value == curr->value){
-        if (!curr->left && !curr->value){
+    }
+    else if(curr->value < value){
+        curr->right = delete_node(curr->right, value);
+    }
+    else if(value == curr->value){
+        if (!curr->left && !curr->right){
             free(curr);
             return NULL;
-        }else if(!curr->left){
+        }
+        else if(!curr->left){
             Node *temp = curr->right;
             free(curr);
-            // curr = temp;
             return temp;
-        }else if(!curr->right){
+        }
+        else if(!curr->right){
             Node *temp = curr->left;
             free(curr);
-            // curr = temp;
             return temp;
-        }else{
+        }
+        else{
             Node *temp = getPredecessor(curr);
             curr->value = temp->value;
             curr->left = delete_node(curr->left, temp->value);
         }
     }
-
     return curr;
 }
 
+
+// Node* delete_node(Node *curr, int value){
+//     if (!curr){
+//         printf("Data not found");
+//         return NULL;
+//     }else if(curr->value > value){
+//         curr->left = delete_node(curr->left, value);
+//     } else if(curr->value < value){
+        
+//     }else if(value == curr->value){
+//         if (!curr->left && !curr->value){
+//             free(curr);
+//             return NULL;
+//         }else if(!curr->left){
+//             Node *temp = curr->right;
+//             free(curr);
+//             // curr = temp;
+//             return temp;
+//         }else if(!curr->right){
+//             Node *temp = curr->left;
+//             free(curr);
+//             // curr = temp;
+//             return temp;
+//         }else{
+//             Node *temp = getPredecessor(curr);
+//             curr->value = temp->value;
+//             curr->left = delete_node(curr->left, temp->value);
+//         }
+//     }
+
+//     return curr;
+// }
+
+Node* popAll(Node *curr){
+    if (curr != NULL){
+        popAll(curr->left);
+        popAll(curr->right);
+        free(curr);
+        curr = NULL;
+    }
+    return NULL;
+}
+
+void popAll2(){
+    while(ROOT){
+        ROOT = delete_node(ROOT, ROOT->value);
+    }
+}
+
+
 int main(){
+    ROOT = insert_node(ROOT, 10);
     ROOT = insert_node(ROOT, 5);
-    ROOT = insert_node(ROOT, 5);
-    ROOT = insert_node(ROOT, 3);
-    ROOT = insert_node(ROOT, 7);
     ROOT = insert_node(ROOT, 2);
-    ROOT = insert_node(ROOT, 4);
+    ROOT = insert_node(ROOT, 7);
+    ROOT = insert_node(ROOT, 20);
+
+    pre_order(ROOT);
+    puts("");
+    ROOT = delete_node(ROOT, 10);
+    ROOT = delete_node(ROOT, 13);
 
 
     pre_order(ROOT);
