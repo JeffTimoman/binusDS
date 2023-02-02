@@ -1,0 +1,11 @@
+
+Linked List :
+    --> Storing -> Dynamic 
+                -> Static : Array
+    - Singly Linked List -> Ga bakal masuk
+    - Doubly Linked List 
+       --> Insert, Delete, Search
+
+Hashing : 
+
+Binary Search Tree :
