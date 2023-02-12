@@ -38,7 +38,8 @@ void turnInfixIntoPostfix(char infixString[], char postfixString[]){
 
 int main(){
     // char infixString[100] = "4+6*(5-2)/3";
-    char infixString[100] = "A+B-C*D^E/F*(G-H)";
+    // char infixString[100] = "A+B-C*D^E/F*(G-H)";
+    char infixString[100] = "(A+B*C)*D+E*F";
     char postfixString[100];
     turnInfixIntoPostfix(infixString, postfixString);
 

@@ -133,6 +133,22 @@ void popAll2(){
     }
 }
 
+int getAllTreeValue(Node*curr){
+    if (curr != NULL){
+        return curr->value + getAllTreeValue(curr->left) + getAllTreeValue(curr->right);
+    }
+    return 0;
+}
+
+int sum = 0;
+void getAllTreeValue2(Node *curr){
+    if (curr != NULL){
+        getAllTreeValue2(curr->left);
+        sum += curr->value;
+        getAllTreeValue2(curr->right);
+    }
+}
+
 
 int main(){
     ROOT = insert_node(ROOT, 10);
@@ -148,5 +164,7 @@ int main(){
 
 
     pre_order(ROOT);
+    puts("");
+    printf("%d", getAllTreeValue(ROOT));
     return 0;
 }

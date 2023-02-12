@@ -57,6 +57,9 @@ void push(char str[]){
     hashTable[node->key].dataCount++;
 }
 
+void del(char str[]){
+    
+}
 
 // void view(){
 //     for(int i = 0; i < TABLE_SIZE; i++){
