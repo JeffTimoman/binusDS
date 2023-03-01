@@ -55,15 +55,20 @@ void insert(Node *temp){
 		TAIL = temp;
 	}else{
 		Node* curr = HEAD;
-		while(curr->next != NULL && curr->level >= temp->level){
+		while(curr && curr->level >= temp->level){
 			curr = curr->next;
 		}
 		
-		temp->next = curr;
-		temp->prev = curr->prev;
-		curr->prev->next = temp;
-		curr->prev = temp;
-		
+		if (curr == TAIL){
+			TAIL->next = temp;
+			temp->prev = TAIL;
+			TAIL = temp;
+		}else{
+			temp->next = curr;
+			temp->prev = curr->prev;
+			temp->prev->next = temp;
+			curr->prev = temp;
+		}
 	}
 }
 
@@ -119,9 +124,18 @@ int getCustomerId(char name[]){
 }
 
 char* generateId(int level){
-	char temp[11];
-	sprintf(temp, "0%d-%c%c%d%d%d%d", level, rand() % 26 + 'A', rand() % 26 + 'A'
-	, rand() % 10 + '0', rand() % 10 + '0', rand() % 10 + '0', rand() % 10 + '0');
+	char temp[10];
+	// sprintf(temp, "0%d-%c%c%d%d%d%d", level, rand() % 26 + 'A', rand() % 26 + 'A'
+	// , rand() % 10 + '0', rand() % 10 + '0', rand() % 10 + '0', rand() % 10 + '0');
+	temp[0] = '0';
+	temp[1] = level + '0';
+	temp[2] = '-';
+	temp[3] = rand() % 26 + 'A';
+	temp[4] = rand() % 26 + 'A';
+	temp[5] = rand() % 10 + '0';
+	temp[6] = rand() % 10 + '0';
+	temp[7] = rand() % 10 + '0';
+	temp[8] = rand() % 10 + '0';
 	temp[9] = '\0';
 	return temp;
 }
@@ -142,20 +156,11 @@ void addNewOrder(){
 		printf(" Customer Name  : %s\n", customers[index].name);
 		printf(" Membership Type: %s\n", MEMBERSHIP_TYPE[customers[index].level]);
 		
-		char randomizedId[10];	
-		sprintf(randomizedId, "0%d-%c%c%d%d%d%d", customers[index].level, rand() % 26 + 'A', rand() % 26 + 'A', 
-			rand() % 10 + '0', rand() % 10 + '0', rand() % 10 + '0', rand() % 10 + '0');
-		
-		temp = createNode(randomizedId, customers[index].name, customers[index].level);
+		temp = createNode(generateId(customers[index].level), name, customers[index].level);
 	}else{
 		puts(" Membership data not found!");
 		
-		//1 : Non-Member
-		char randomizedId[10];	
-		sprintf(randomizedId, "0%d-%c%c%d%d%d%d", 1, rand() % 26 + 'A', rand() % 26 + 'A', 
-			rand() % 10 + '0', rand() % 10 + '0', rand() % 10 + '0', rand() % 10 + '0');
-
-		temp = createNode(randomizedId, name, 1);
+		temp = createNode(generateId(0), name, 0);
 	}
 	
 	puts("");
@@ -213,53 +218,22 @@ void addNewOrder(){
 void printAll(){
 	Node* temp = HEAD;
 	int i = 1;
- 	while(temp){
-		int total = 0;
-		printf("Queue No.%03d\n", i++);
-		printf("Order ID : %s\n", temp->orderID);
-		puts("Order List : ");
-		int j = 0;
-		while(temp->orders[j].menuID != 0){
-			printf("   %d x %-20s = %d\n", temp->orders[j].quantity, 
-			 menus[temp->orders[j].menuID - 1].name, 
-			 menus[temp->orders[j].menuID - 1].price * temp->orders[j].quantity);
-			 total +=  menus[temp->orders[j].menuID - 1].price * temp->orders[j].quantity;
-			 j++;
+    while (temp){
+        printf("Queue No.%02d\n", i);
+        printf("Order ID : %s\n", temp->orderID);
+        printf("Customer : %s\n", temp->name);
+        printf("Order List:\n");
+        int i = 0, total = 0;
+		while (temp->orders[i].menuID != 0){
+			printf("   %d x %-20s = %d\n", temp->orders[i].quantity, 
+			 menus[temp->orders[i].menuID - 1].name, 
+			 menus[temp->orders[i].menuID - 1].price * temp->orders[i].quantity);
+			 total +=  menus[temp->orders[i].menuID - 1].price * temp->orders[i].quantity;
+			i++;
 		}
-		printf("Total order is %d\n", total);
-		puts("");
 		temp = temp->next;
+		i++;
 	}
-
-	puts("");
-	printf("Press ENTER to back to Main Menu..."); getchar();
-}
-
-void popHead(){
-	if (HEAD == NULL){
-		return;
-	}else if (HEAD == TAIL){
-		printf("Finished preparation for order ID %s (%s).", HEAD->orderID, HEAD->name);
-		free(HEAD);
-		HEAD = TAIL = NULL;
-	}else{
-		printf("Finished preparation for order ID %s (%s).", HEAD->orderID, HEAD->name);
-		Node* temp = HEAD;
-		HEAD = HEAD->next;
-		free(temp);
-	}
-	puts("");
-	printf("Press ENTER to back to Main Menu..."); getchar();
-}
-
-void popAll(){
-	Node* temp = HEAD;
-	while(temp){
-		Node* temp2 = temp;
-		temp = temp->next;
-		free(temp2);
-	}
-	HEAD = TAIL = NULL;
 }
 
 int main(){
@@ -275,10 +249,8 @@ int main(){
 				addNewOrder();
 				break; 
 			case 2: 
-				printAll();
 				break;
 			case 3: 
-				popHead();
 				break;
 			case 4: 
 				break;

@@ -93,7 +93,8 @@ void turnInfixtoPrefix(char infix[], char prefix[]){
 }
 
 int main(){
-    char infix[100] = "A+B-C*D^E/F*(G-H)";
+    // char infix[100] = "A+B-C*D^E/F*(G-H)";
+    char infix[100] = "(A-B/D^E+(F*G))";
     char prefix[100];
     printf("Infix: %s\n", infix);
     turnInfixtoPrefix(infix, prefix);

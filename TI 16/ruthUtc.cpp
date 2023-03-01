@@ -84,7 +84,13 @@ void addCustomer(){
     char customerName[100], memberShipName[100];
     do{
         printf("Customer Name: ");
-    }while();
+        scanf("%[^\n]", customerName); getchar();
+    }while(strlen(customerName) < 3 || strlen(customerName) > 50);
+
+    do{
+        printf("Membership Name: ");
+        scanf("%[^\n]", memberShipName); getchar();
+    }while()
 }
 
 int main(){
