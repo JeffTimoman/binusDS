@@ -71,7 +71,7 @@ Node* right_rotate(Node* node){
 
 Node* insert(Node* node, int value){
     if(!node){
-        return createNode(value);
+        node = createNode(value);
     }else if(value == node->value){
         printf("Value already exists in the tree");
     }else if(value < node->value){
